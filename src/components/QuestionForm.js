@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 function QuestionForm(props) {
+  const { questions, handleAdd } = props;
   const [formData, setFormData] = useState({
     prompt: "",
     answer1: "",
@@ -17,9 +18,30 @@ function QuestionForm(props) {
     });
   }
 
+  const generateId = () => {
+    const ids = [];
+    questions.map((question) => {
+      ids.push(question.id);
+    });
+    let maxId = Math.max(...ids);
+    return maxId + 1;
+  };
+
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+    const values = {
+      id: generateId(),
+      prompt: formData.prompt,
+      answers: [
+        formData.answer1,
+        formData.answer2,
+        formData.answer3,
+        formData.answer4,
+      ],
+      correctIndex: Number(formData.correctIndex),
+    };
+    console.log('values', values)
+    handleAdd(values);
   }
 
   return (
